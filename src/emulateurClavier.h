@@ -16,7 +16,6 @@
 // Longueur de chaque paquet USB HID contenant l'information sur les touches
 // pressees Cette valeur est constante (definie dans la norme USB)
 #define LONGUEUR_USB_PAQUET 8
-const char EMPTY_PACKET[LONGUEUR_USB_PAQUET] = {0};
 
 // Cette fonction initialise le clavier en ouvrant le fichier virtuel en
 // ecriture et en retournant le pointeur de fichier correspondant. Elle est deja

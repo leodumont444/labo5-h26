@@ -114,24 +114,32 @@ static void *threadFonctionClavier(void *args)
 			continue;
 		}
 
-		ecrireCaracteres(fd, req.data, req.taille, time); // perror already displays everything, no need to do something in case of error
+		if (ecrireCaracteres(fd, req.data, req.taille, time) < 0) {
+			fprintf(stderr, "Failed to write request to HID bus.\n");
+		}
 		free(req.data);
 	}
 	return NULL;
 }
 
-int updateMessage(struct requete *req, char *new, size_t len)
+int updateMessage(struct requete *req, const char *newData, size_t len)
 {
+	if (len == 0) {
+		return 0;
+	}
+
 	if (req->data == NULL) {
-		req->data = strndup(new, len);
+		req->data = malloc(len + 1);
 		if (req->data == NULL) {
 			perror("Failed to allocate memory for message.");
 			req->taille = 0;
 			return -1;
 		}
+		memcpy(req->data, newData, len);
+		req->data[len] = '\0';
 		req->taille = len;
 	} else {
-		size_t newLength = (req->taille + len) * sizeof(char);
+		size_t newLength = req->taille + len;
 		char *newMessage = realloc(req->data, newLength + 1);
 		if (newMessage == NULL) {
 			perror("Failed to allocate memory for message.");
@@ -141,7 +149,8 @@ int updateMessage(struct requete *req, char *new, size_t len)
 			return -1;
 		}
 		req->data = newMessage;
-		strncat(req->data, new, len);
+		memcpy(req->data + req->taille, newData, len);
+		req->data[newLength] = '\0';
 		req->taille = newLength;
 	}
 	return 0;
@@ -202,6 +211,11 @@ static void *threadFonctionLecture(void *args)
 			continue;
 		}
 		if (res == 0) {
+			if (req.data != NULL) {
+				free(req.data);
+				req.data = NULL;
+				req.taille = 0;
+			}
 			usleep(5000);
 			continue;
 		}
@@ -232,7 +246,10 @@ static void *threadFonctionLecture(void *args)
 				req.tempsReception = get_time();
 			}
 
-			updateMessage(&req, buffer, res);
+			if (updateMessage(&req, buffer, res) != 0) {
+				req.data = NULL;
+				req.taille = 0;
+			}
 		}
 	}
 

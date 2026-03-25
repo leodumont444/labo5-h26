@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+static const char EMPTY_PACKET[LONGUEUR_USB_PAQUET] = {0};
+
 FILE *initClavier(void)
 {
 #ifdef SIMULATION_MODE
@@ -105,7 +107,7 @@ bool containsInvalidCharacters(char const *caracteres, size_t len)
 int ecrireCaracteres(FILE *periphClavier, const char *caracteres, size_t len, unsigned int tempsTraitementParPaquetMicroSecondes)
 {
 	if (containsInvalidCharacters(caracteres, len)) {
-		perror("Invalid characters found.");
+		fprintf(stderr, "Invalid characters found.\n");
 		return -1;
 	}
 
