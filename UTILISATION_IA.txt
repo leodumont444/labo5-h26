@@ -1,9 +1,38 @@
 Question 1 : Avez-vous utilisé un ou des outils d'IA pour ce laboratoire, même seulement en partie (oui/non)?
 
+Oui
+
 Répondez aux questions suivantes seulement si vous avez répondu "oui" à la question précédente.
 
 Question 2 : Quels modèles (ex., Claude Opus, Gemini Pro, GPT-Codex, etc.)?
 
+Gemini pro 3.1, Claude Sonnet 4.6 et Qwen 3.5 9B en local pour découvrir (ça n'a pas très bien fonctionné...)
+
 Question 3 : Pour la réalisation de quelles tâches en particulier? Donnez un exemple de "prompt" utilisé et de résultat.
 
+Principalement recherche plus rapide avec exemples de code pour des fonctions dont je connais le fonctionnement mais ne me rappelle plus des elements tres specifiques (barriere avec barrierattr ou memchr)
+Egalement pour setup le rpi plus rapidement qu'en lisant tous les détails du sujet à nouveau.
+
+"quelles sont les etapes avant de brancher mon rasp en usb pour initialiser mon rasp etc et quil soit reconnu comme un programme et alimenté par le USB ?
+egalement je n'ai quun micro usb male -> usb a femelle, usb a male -> usb c male ca passe pour tester ?"
+
+egalement pour setup environnement local sans rpi (plus rapide)
+
+====================================================
+
+Beaucoup utiliser comme un moteur de recherche pour des exemples de fonctions et pour des questions sur pour aider le deboguage.
+Il a aider dans la conversion des caracteres en code USB-HID, et l'implementation du threadFonctionLecture
+
+"Donne moi un exemple d'utilisation de la fonction FD_ISSET"
+
+"if (select(nfds, &setFd, NULL, NULL, NULL) > 0) {
+    if (FD_ISSET(infos->pipeFd, &setFd)) {
+        // pipeFd has data ready to read
+    }
+}
+
+FD_ISSET checks if a specific file descriptor is still in the set after select() returns — meaning that descriptor has data available."
+
 Question 4 : Avez-vous rencontré des problèmes lors de l'utilisation de l'IA (mauvaise compréhension des commandes fournies, résultats erronés, etc.)? Qu'avez-vous fait pour les régler?
+
+pas vraiment, il a très bien répondu à mes questions de configuration ou les questions générales pour le fonctionnement des fonctions C.

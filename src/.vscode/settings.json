@@ -10,5 +10,23 @@
         "fcntl.h": "c",
         "unistd.h": "c",
         "utils.h": "c"
+    },
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.formatting": "disabled",
+    "clangd.path": "clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy"
+    ],
+    "editor.formatOnSave": true,
+    "[c]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always",
+        "source.fixAll.clangd": "always"
     }
 }

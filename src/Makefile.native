@@ -1,0 +1,38 @@
+# Makefile.native - Build natif pour dev/test local
+# NE PAS MODIFIER le CMakeLists.txt du prof, utiliser ce fichier a la place
+
+CC = gcc
+CFLAGS = -std=gnu17 -Wall -Wextra -Wpedantic -Wduplicated-cond -Wlogical-op -Wnull-dereference -Wshadow -Og -g -DSIMULATION_MODE
+LDFLAGS = -lpthread -lm
+
+SRCDIR = .
+BUILDDIR = build-native
+SOURCES = $(SRCDIR)/utils.c $(SRCDIR)/emulateurClavier.c $(SRCDIR)/tamponCirculaire.c $(SRCDIR)/main.c
+OBJECTS = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
+TARGET = $(BUILDDIR)/emulateurClavier
+
+.PHONY: all clean test
+
+all: $(TARGET)
+
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+
+# Build + run des tests unitaires
+TEST_CLAVIER_SOURCES = $(SRCDIR)/test_emulateurClavier.c $(SRCDIR)/emulateurClavier.c $(SRCDIR)/utils.c
+TEST_CLAVIER_TARGET = $(BUILDDIR)/test_emulateurClavier
+
+test: $(TEST_CLAVIER_TARGET)
+	./$(TEST_CLAVIER_TARGET)
+
+$(TEST_CLAVIER_TARGET): $(TEST_CLAVIER_SOURCES) | $(BUILDDIR)
+	$(CC) $(CFLAGS) $(TEST_CLAVIER_SOURCES) $(LDFLAGS) -o $@
+
+clean:
+	rm -rf $(BUILDDIR)
